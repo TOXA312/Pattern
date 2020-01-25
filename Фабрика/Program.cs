@@ -1,76 +1,92 @@
 ﻿using System;
 
-namespace Фабрика
+namespace ExampleFactory
 {
 
-        public enum TypeDost : int
-        {
-            DostCar,
-            DostShip
-        };
-        public interface IProduct
-        {
-            TypeDost GetTypeTransport();
+    /// <summary>
+    /// Интерфейс который задает основные хар-ки продукта 
+    /// </summary>
+    public interface IProduct
+    {
+       string Name { get; set; }
+    }
 
+    /// <summary>
+    /// Арбус, является продукстом который нужно доставить 
+    /// </summary>
+    class Watermelon : IProduct
+    {
+        string _Name;
+
+        public string Name { 
+            get => _Name; 
+            set => _Name = value; 
+        }
+        /// <summary>
+        /// Создает объект арбуз
+        /// </summary>
+        /// <param name="NameProduct">Имя арбуза </param>
+        public Watermelon(string NameProduct)
+        {
+            _Name = NameProduct;
         }
 
-        class arbus : IProduct
-        {
-            public TypeDost GetTypeTransport()
-            {
-                return TypeDost.DostCar;
-            }
-        }
-      
-        public interface IDost
-        {
-            public void Delyfari();
-        }
+    }
+    /// <summary>
+    /// Интерфейс описывающий транспорт 
+    /// </summary>
+    public interface ITranport
+    {
+        /// <summary>
+        /// Метод доставки продукта в точку назначений(точка абстрактная, как и пррдукт )
+        /// </summary>
+        /// <param name="Product"> Какой-то продукт для доставки </param>
+        public void Delivery(IProduct Product);
+    }
 
-        public class Car : IDost
+    /// <summary>
+    /// Класс реализует машину как доставщика 
+    /// </summary>
+    public class Car : ITranport
+    {
+        /// <summary>
+        /// Метод доставки 
+        /// </summary>
+        /// <param name="Product"> Какой-то продукт </param>
+        public void Delivery(IProduct Product)
         {
-            public void Delyfari()
-            {
-                Console.WriteLine("Доставка на машине");
-            }
+            Console.WriteLine($"Доставка на машине {Product.Name}");
         }
-     
-        public class Ship : IDost
+    }
+
+    /// <summary>
+    /// Класс реализует корабль как доставщика 
+    /// </summary>
+    public class Ship : ITranport
+    {
+        /// <summary>
+        /// Метод доставки 
+        /// </summary>
+        /// <param name="Product"> Какой-то продукт </param>
+        public void Delivery(IProduct Product)
         {
-            public void Delyfari()
-            {
-                Console.WriteLine("Доставка на карабле");
-            }
+            Console.WriteLine($"Доставка на карабле {Product.Name}");
         }
+    }
 
-        public class CreateDost
+    class Program
+    {
+        static void Main(string[] args)
         {
-            static public IDost CreateTransport(IProduct Product)
-            {
-                switch (Product.GetTypeTransport())
-                {
-                    case TypeDost.DostShip:
-                        {
-                            return new Ship();
-                        }
+            IProduct Product = new Watermelon("Арбуз");
 
-                    case TypeDost.DostCar:
-                        {
-                            return new Car();
-                        }
-                    default:
-                        return null;
-                }
-            }
+            Car CarDelivery = new Car();
+
+            CarDelivery.Delivery(Product);
+
+            Ship ShipDelivery = new Ship();
+
+            ShipDelivery.Delivery(Product);
         }
-        class Program
-        {
-            static void Main(string[] args)
-            {
-                arbus ar = new arbus();
-
-                CreateDost.CreateTransport(ar);
-            }
-        }
-
+    }
 }
