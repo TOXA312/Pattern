@@ -21,7 +21,7 @@ namespace Фабрика
                 return TypeDost.DostCar;
             }
         }
-
+      
         public interface IDost
         {
             public void Delyfari();
