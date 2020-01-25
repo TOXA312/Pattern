@@ -34,7 +34,7 @@ namespace Фабрика
                 Console.WriteLine("Доставка на машине");
             }
         }
-
+     
         public class Ship : IDost
         {
             public void Delyfari()
